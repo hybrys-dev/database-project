@@ -8,7 +8,8 @@
     {
         $_SESSION["logged_in"] = true;
         $_SESSION["username"] = $username;
-        header("Location: main.php");
+        $conn = mysqli_connect("localhost", "root", "", "db_name");
+        // header("Location: main.php");
         exit();
     }
     else
