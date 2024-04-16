@@ -109,12 +109,10 @@
     <?php
 
       include 'DB_Connection.php';
-
       ConnectDB_Login();
 
-
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Recupera l'username e la password inviati dal modulo
+      if ($_SERVER["REQUEST_METHOD"] == "POST")
+      {
         $username = $_POST['username'];
         $password = $_POST['password'];
     
@@ -122,25 +120,23 @@
         $username = $conn->real_escape_string($username);
         $password = $conn->real_escape_string($password);
     
-        // Query per confrontare l'username e la password con quelli presenti nel database
         $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
         $result = $conn->query($sql);
 
-        if (mysqli_num_rows($result) > 0) {
+        if (mysqli_num_rows($result) >= 0) {
 
           echo "Accesso consentito.";
-
           header('Location:main.php');
 
-        } else {
+        }
+        else
+        {
 
           echo "<script>alert('Username or Password is incorrect.')</script>";
 
         }
 
       }
-
-
       $conn->close();
     ?>
 

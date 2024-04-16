@@ -32,7 +32,7 @@
         {
             die("Connessione fallita". mysqli_connect_error());
         }
-        header('Location:main.php');
         return $connection;
+
     }
 ?>
