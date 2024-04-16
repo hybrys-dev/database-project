@@ -98,34 +98,24 @@
         }
     </style>
   </head>
-  <body>
-    <div class="login-box">
-      <h1>Log in your database.</h1>
-      <div class="textbox">
-        <i class="fa fa-user"></i>
-        <input type="text" placeholder="Username " name="" value="">
+    <body>
+      
+      <?php
+        session_start();
+        include 'DB_Connection.php';
+      ?>
+
+      <div class="login-box">
+        <h1>Log in your database.</h1>
+        <div class="textbox">
+          <i class="fa fa-user"></i>
+          <input type="text" placeholder="Username " name="" value="">
+        </div>
+        <div class="textbox">
+          <i class="fa fa-lock"></i>
+          <input type="password" placeholder="Password " name="" value="">
+        </div>
+        <input class="btn" type="button" name="" value="Sign in">
       </div>
-      <div class="textbox">
-        <i class="fa fa-lock"></i>
-        <input type="password" placeholder="Password " name="" value="">
-      </div>
-      <input class="btn" type="button" name="" value="Sign in">
-    </div>
   </body>
 </html>
-
-<?php
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "database_users";
-
-    $connection = mysqli_connect($host, $username, $password, $dbname);
-    if(!$connection)
-    {
-        die("Connessione fallita". mysqli_connect_error());
-    }
-    echo "Connessione avvenuta con successo!";
-    header("Location:main.php");
-    exit();
-?>
