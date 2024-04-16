@@ -98,24 +98,88 @@
         }
     </style>
   </head>
-    <body>
-      
-      <?php
-        session_start();
-        include 'DB_Connection.php';
-      ?>
-
-      <div class="login-box">
+  <body>
+    <div class="login-box">
         <h1>Log in your database.</h1>
         <div class="textbox">
-          <i class="fa fa-user"></i>
-          <input type="text" placeholder="Username " name="" value="">
+            <i class="fa fa-user"></i>
+            <input type="text" placeholder="Username" name="username" value="">
         </div>
         <div class="textbox">
-          <i class="fa fa-lock"></i>
-          <input type="password" placeholder="Password " name="" value="">
+            <i class="fa fa-lock"></i>
+            <input type="password" placeholder="Password" name="password" value="">
         </div>
-        <input class="btn" type="button" name="" value="Sign in">
-      </div>
-  </body>
+        <input class="btn" type="submit" name="submit" value="Sign in">
+    </div>
+    
+    <script>
+        function login() {
+            var username = document.getElementById('username').innerText;
+            var password = document.getElementById('password').innerText;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "<?php echo $_SERVER['PHP_SELF']; ?>", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert("Login successful!");
+                    } else {
+                        alert("Invalid username or password.");
+                    }
+                }
+            };
+
+            var data = JSON.stringify({username: username, password: password});
+            xhr.send(data);
+        }
+    </script>
+
+    <?php
+      if ($_SERVER["REQUEST_METHOD"] == "POST")
+      {
+          // Recupera i dati dalla richiesta AJAX
+          $data = json_decode(file_get_contents("php://input"));
+
+          // Estrai username e password
+          $username = $data->username;
+          $password = $data->password;
+
+          // Connessione al database (esempio di connessione a MySQL)
+          $servername = "localhost";
+          $username_db = "username";
+          $password_db = "password";
+          $database = "database_users";
+
+          $conn = new mysqli($servername, $username_db, $password_db, $database);
+
+          // Verifica connessione
+          if ($conn->connect_error) {
+              die("Connection failed: " . $conn->connect_error);
+          }
+
+          // Query per confrontare l'username e la password con quelli presenti nel database
+          $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+          $result = $conn->query($sql);
+
+          // Controllo se la query ha restituito un risultato
+          if ($result->num_rows > 0) {
+              // Login valido
+              $response = array("success" => true);
+          } else {
+              // Login non valido
+              $response = array("success" => false);
+          }
+
+          // Restituzione della risposta come JSON
+          echo "<script>console.log('" . json_encode($response) . "');</script>";
+
+          // Chiusura della connessione al database
+          $conn->close();
+      }
+    ?>
+
+</body>
 </html>
