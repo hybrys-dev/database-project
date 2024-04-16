@@ -93,7 +93,7 @@
   <body>
     <div class="login-box">
       <h1>Log in your database.</h1>
-      <form id="login-form">
+      <form id="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
           <div class="textbox">
               <i class="fa fa-user"></i>
               <input type="text" placeholder="Username" name="username" value="">
@@ -107,26 +107,42 @@
     </div>
       
     <?php
+
       include 'DB_Connection.php';
+
       ConnectDB_Login();
-      $sql = "SELECT *FROM users WHERE username = '$user' AND password = '$password'";
-      $result = mysqli_query($conn, $sql);
-      if (mysqli_num_rows($result) > 0)
-      {
-        echo "Accesso consentito.";
-        header('Location:main.php');
-      }
-      else
-      {
-        echo "<script>alert('Username or Password is incorrect.')</script>";
-      }
-      if (isset($_POST['submit']))
-      {
-        $user = $_POST['username'];
+
+
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Recupera l'username e la password inviati dal modulo
+        $username = $_POST['username'];
         $password = $_POST['password'];
+    
+        // Escapare i dati per prevenire attacchi di SQL injection
+        $username = $conn->real_escape_string($username);
+        $password = $conn->real_escape_string($password);
+    
+        // Query per confrontare l'username e la password con quelli presenti nel database
+        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $result = $conn->query($sql);
+
+        if (mysqli_num_rows($result) > 0) {
+
+          echo "Accesso consentito.";
+
+          header('Location:main.php');
+
+        } else {
+
+          echo "<script>alert('Username or Password is incorrect.')</script>";
+
+        }
+
       }
+
+
       $conn->close();
-    ?>  
+    ?>
 
 </body>
 </html>

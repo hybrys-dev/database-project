@@ -22,17 +22,17 @@
     
     function ConnectDB_Login()
     {
-        $host = $_SESSION['localhost'];
-        $user = $_SESSION['root'];
-        $password = $_SESSION[''];
+        $host = "localhost";
+        $user = "root";
+        $password = "";
         $dbname = "database_users";
 
-        $connection = mysqli_connect($host, $user, $password, $dbname);
+        $connection = new mysqli($host, $user, $password, $dbname);
         if(!$connection)
         {
             die("Connessione fallita". mysqli_connect_error());
         }
-        echo "Connessione avvenuta con successo!";
+        header('Location:main.php');
         return $connection;
     }
 ?>
