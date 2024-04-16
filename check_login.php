@@ -9,7 +9,7 @@
         $_SESSION["logged_in"] = true;
         $_SESSION["username"] = $username;
         $conn = mysqli_connect("localhost", "root", "", "db_name");
-        // header("Location: main.php");
+        header("Location: main.php");
         exit();
     }
     else
