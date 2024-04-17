@@ -93,52 +93,65 @@
   <body>
     <div class="login-box">
       <h1>Log in your database.</h1>
-      <form id="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-          <div class="textbox">
-              <i class="fa fa-user"></i>
-              <input type="text" placeholder="Username" name="username" value="">
-          </div>
-          <div class="textbox">
-              <i class="fa fa-lock"></i>
-              <input type="password" placeholder="Password" name="password" value="">
-          </div>
+      <form id="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+        <div class="textbox">
+          <i class="fa fa-user"></i>
+          <input type="text" placeholder="Username" name="username" value="<?php echo $username;?>">
+        </div>
+        <div class="textbox">
+          <i class="fa fa-lock"></i>
+          <input type="password" placeholder="Password" name="password" value="<?php echo $password;?>">
+        </div>
           <input class="btn" type="submit" name="submit" value="Sign in">
+        </div>
       </form>
-    </div>
-      
-    <?php
+      <?php
+        include 'DB_Connection.php';
+        $connection = ConnectDB_Login();
 
-      include 'DB_Connection.php';
-      ConnectDB_Login();
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
 
-      if ($_SERVER["REQUEST_METHOD"] == "POST")
-      {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-    
-        // Escapare i dati per prevenire attacchi di SQL injection
-        $username = $conn->real_escape_string($username);
-        $password = $conn->real_escape_string($password);
-    
-        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-        $result = $conn->query($sql);
-
-        if (mysqli_num_rows($result) >= 0) {
-
-          echo "Accesso consentito.";
-          header('Location:main.php');
-
-        }
-        else
+        if($_SERVER["REQUEST_METHOD"] == "POST")
         {
+          $username = $_POST['username'];
+          $password = $_POST['password'];
+          
+          // Escapare i dati per prevenire attacchi di tipo SQL injection
+          $username = $connection->real_escape_string($username);
+          $password = $connection->real_escape_string($password);
+          
+          // Hashing dell password
+          //$password = password_hash($password, PASSWORD_DEFAULT);
 
-          echo "<script>alert('Username or Password is incorrect.')</script>";
+          $stmt = $connection->prepare("SELECT * FROM users WHERE User =?");
+          $stmt->bind_param("s", $username);
+          $username = $_POST['username'];
+          $stmt->execute();
+          $result = $stmt->get_result();
+          
+          if($result->num_rows >=0)
+          {
+            $row = $result->fetch_assoc();
+            if($_POST['password'] == $row['Password'])
+            {
+              echo "Accesso consentito.";
+              header('Location: main.php');
+            }
+            else
+            {
+              echo "Password errata.";
+            }
+          } 
+          else
+          {
+            echo "Utente non trovato.";
+          }
 
+          $stmt->close();
         }
-
-      }
-      $conn->close();
-    ?>
+        $connection->close();
+      ?>
 
 </body>
 </html>
