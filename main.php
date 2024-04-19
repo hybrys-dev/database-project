@@ -71,7 +71,6 @@
 <body>
     <h1>Benvenuto nel tuo DBMS</h1>
     <div class="homepage-container">
-        <
         <div class="homepage-links">
             <a href="man_db.php">Connessione ai tuoi database</a>
             <a href="man_table.php">Lavora sulle tabelle</a>

@@ -112,28 +112,26 @@
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
 
-        if($_SERVER["REQUEST_METHOD"] == "POST")
-        {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $username = $_POST['username'];
           $password = $_POST['password'];
-          
-          // Escapare i dati per prevenire attacchi di tipo SQL injection
+      
+          // Escape the data to prevent SQL injection attacks
           $username = $connection->real_escape_string($username);
           $password = $connection->real_escape_string($password);
-          
-          // Hashing dell password
-          //$password = password_hash($password, PASSWORD_DEFAULT);
-
+      
+          // Hash della password
+          $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+      
           $stmt = $connection->prepare("SELECT * FROM users WHERE User =?");
           $stmt->bind_param("s", $username);
-          $username = $_POST['username'];
           $stmt->execute();
           $result = $stmt->get_result();
-          
-          if($result->num_rows >=0)
+      
+          if ($result->num_rows > 0)
           {
             $row = $result->fetch_assoc();
-            if($_POST['password'] == $row['Password'])
+            if (password_verify($row['Password'],$hashed_password))
             {
               echo "Accesso consentito.";
               header('Location: main.php');
@@ -142,7 +140,7 @@
             {
               echo "Password errata.";
             }
-          } 
+          }
           else
           {
             echo "Utente non trovato.";
