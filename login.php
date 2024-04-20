@@ -115,8 +115,8 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $username = $_POST['username'];
           $password = $_POST['password'];
-      
-          // Escape the data to prevent SQL injection attacks
+          $user = $username;
+          // Escapazione dei dati per revenire attacchi di tipo SQL Injection
           $username = $connection->real_escape_string($username);
           $password = $connection->real_escape_string($password);
       
