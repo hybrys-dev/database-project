@@ -7,4 +7,5 @@
 
     header("Location: login.php");
     exit();
+    echo "Sessione terminata" ;
 ?>

@@ -62,6 +62,15 @@
             margin-bottom: 10px;
             align-items: center;
         }
+        
+        homepage-links logout{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
         .homepage-links a:hover {
             color: #ccc;
@@ -69,11 +78,18 @@
     </style>
 </head>
 <body>
-    <h1>Benvenuto nel tuo DBMS</h1>
+    <?php
+        $username = $_POST['username'];
+    ?>
+    <h1>Benvenuto nel tuo DBMS, <php? echo $username; ?></h1>
     <div class="homepage-container">
         <div class="homepage-links">
             <a href="man_db.php">Connessione ai tuoi database</a>
             <a href="man_table.php">Lavora sulle tabelle</a>
+            <a href="record_man.php">Manipola record della tabella</a>
+        </div>
+
+        <div class="homepage-link logout">
             <a href="Logout.php">Logout</a>
         </div>
     </div>
