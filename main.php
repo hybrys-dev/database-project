@@ -39,6 +39,12 @@
             text-align: center;
             justify-content: center;
         }
+        h3
+        {
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+        }
         .homepage-container {
             width: 100%;
             height: 100%;
@@ -79,9 +85,22 @@
 </head>
 <body>
     <?php
-        $username = $_POST['username'];
+        session_start();
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        if(isset($_SESSION['username']))
+        {
+            $username = $_SESSION['username'];
+        }
+        else
+        {
+            header("Location: login.php");
+            exit();
+        }
     ?>
-    <h1>Benvenuto nel tuo DBMS<php? echo $username ?></h1>
+    <h3>User: <?php echo $username; ?></h3> <h3>Database corrente:</h3> <h1>Benvenuto nel tuo DBMS</h1>
+    
+    
     <div class="homepage-container">
         <div class="homepage-links">
             <a href="man_db.php">Connessione ai tuoi database</a>

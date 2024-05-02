@@ -106,16 +106,16 @@
         </div>
       </form>
       <?php
-        include 'DB_Connection.php';
-        $connection = ConnectDB_Login();
-
+        session_start();
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
+        include 'DB_Connection.php';
+        $connection = Connection();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $username = $_POST['username'];
           $password = $_POST['password'];
-          $user = $username;
+          
           // Escapazione dei dati per revenire attacchi di tipo SQL Injection
           $username = $connection->real_escape_string($username);
           $password = $connection->real_escape_string($password);
@@ -134,6 +134,7 @@
             if (password_verify($row['Password'],$hashed_password))
             {
               echo "Accesso consentito.";
+              $_SESSION['username'] = $username;
               header('Location: main.php');
             }
             else
