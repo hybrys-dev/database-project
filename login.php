@@ -150,6 +150,5 @@
         }
         $connection->close();
       ?>
-
 </body>
 </html>

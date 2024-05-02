@@ -41,7 +41,7 @@
         }
         .homepage-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -63,11 +63,11 @@
             align-items: center;
         }
         
-        homepage-links logout{
+        .homepage-logout{
             width: 100%;
             height: 100vh;
             display: flex;
-            justify-content: center;
+            justify-content:flex-end;
             align-items: center;
             flex-direction: column;
         }
@@ -81,16 +81,13 @@
     <?php
         $username = $_POST['username'];
     ?>
-    <h1>Benvenuto nel tuo DBMS, <php? echo $username; ?></h1>
+    <h1>Benvenuto nel tuo DBMS<php? echo $username ?></h1>
     <div class="homepage-container">
         <div class="homepage-links">
             <a href="man_db.php">Connessione ai tuoi database</a>
             <a href="man_table.php">Lavora sulle tabelle</a>
             <a href="record_man.php">Manipola record della tabella</a>
-        </div>
-
-        <div class="homepage-link logout">
-            <a href="Logout.php">Logout</a>
+            <a href="logout.php">Logout</a>
         </div>
     </div>
 </body>
