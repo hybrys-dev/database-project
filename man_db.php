@@ -50,10 +50,31 @@
 </head>
 <body>
 
-    <?php
-        include 'DB_Connection.php';
-        $username = start_error_userprint();
-    ?>
+<?php
+  // Include the database connection file
+  include 'DB_Connection.php';
+  $username = start_error_userprint();
+
+  // Get the list of databases
+  $result = $mysqli->query("SHOW DATABASES");
+
+  // Loop through the databases and generate buttons for each one
+  while ($row = $result->fetch_assoc()) {
+    $database = $row['Database'];
+
+    // Create a form for each database button
+    echo "<form action='list_tables.php' method='GET'>";
+
+    // Add a hidden input field for the database name
+    echo "<input type='hidden' name='database' value='$database'>";
+
+    // Create the button with the database name as its label
+    echo "<button type='submit'>$database</button>";
+
+    // Close the form
+    echo "</form>";
+  }
+?>
 
     <h1>Seleziona un database</h1> <h3>User: <?php echo $username; ?></h3> <h3>Database:</h3> 
 </body>

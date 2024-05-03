@@ -10,10 +10,8 @@
     <?php
         include 'DB_Connection.php';
         $username = start_error_userprint();
-        
     ?>
     <h1>Benvenuto nel tuo DBMS</h1> <h3>User: <?php echo $username; ?></h3> <h3>Database:</h3> 
-    
     
     <div class="homepage-container">
         <div class="homepage-links">
