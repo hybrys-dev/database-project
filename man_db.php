@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Selezione database</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css?family=Exo&display=swap');
@@ -40,9 +40,21 @@
             text-align: center;
             justify-content: center;
         }
+        h3
+        {
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    
+
+    <?php
+        include 'DB_Connection.php';
+        $username = start_error_userprint();
+    ?>
+
+    <h1>Seleziona un database</h1> <h3>User: <?php echo $username; ?></h3> <h3>Database:</h3> 
 </body>
 </html>

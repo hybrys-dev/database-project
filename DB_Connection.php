@@ -18,4 +18,21 @@
     {
         mysqli_close($connection);
     }
+
+    function start_error_userprint()
+    {
+        session_start();
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        if(isset($_SESSION['username']))
+        {
+            $username = $_SESSION['username'];
+            return $username;
+        }
+        else
+        {
+            header("Location: login.php");
+            exit();
+        }
+    }
 ?>
