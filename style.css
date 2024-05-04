@@ -32,6 +32,16 @@ h1
     text-align: center;
     justify-content: center;
 }
+
+a
+{
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
 h3
 {
     font-size: 15px;

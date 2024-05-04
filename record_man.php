@@ -13,7 +13,6 @@
         $username = start_error_userprint();
     ?>
 
-    <h1>Interroga database tramite query SQL</h1> <h3>User: <?php echo $username; ?></h3> <h3>Database: </h3> 
-
+    <h1>Interroga database tramite query SQL</h1> <h3>User: <?php echo $username; ?></h3> <h3>Database: </h
 </body>
 </html>
