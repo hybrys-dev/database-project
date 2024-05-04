@@ -61,11 +61,11 @@
       <form id="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
         <div class="textbox">
           <i class="fa fa-user"></i>
-          <input type="text" placeholder="Username" name="username" value="<?php echo $username;?>">
+          <input type="text" placeholder="Username" name="username" value="<?php $username;?>">
         </div>
         <div class="textbox">
           <i class="fa fa-lock"></i>
-          <input type="password" placeholder="Password" name="password" value="<?php echo $password;?>">
+          <input type="password" placeholder="Password" name="password" value="<?php $password;?>">
         </div>
           <input class="btn" type="submit" name="submit" value="Sign in">
         </div>
