@@ -7,9 +7,9 @@ body {
     font-size: 20px;
     font-family: "Exo", sans-serif;
     color: #fff;
-    background: linear-gradient(-90deg, #000, #293133);
+    background: linear-gradient(-90deg, #000, rgb(36, 36, 36));
     background-size: 500% 500%;
-    animation: gradientBG 20s ease infinite;
+    animation: gradientBG 10s ease infinite;
 }
 
 @keyframes gradientBG {
@@ -37,16 +37,33 @@ a
 {
     color: white;
     text-decoration: none;
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 20px;
     align-items: center;
+    justify-content: center;
+}
+
+h2
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    justify-content: center;
+}
+li
+{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    justify-content: center;
 }
 
 h3
 {
     font-size: 15px;
     font-weight: bold;
-    color: white;
+    color: #ffffff;
 }
 .homepage-container {
     width: 100%;
@@ -60,7 +77,6 @@ h3
 .homepage-links {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
     align-items:center
 }
 
@@ -68,7 +84,6 @@ h3
     color: white;
     text-decoration: none;
     font-size: 24px;
-    margin-bottom: 10px;
     align-items: center;
 }
 

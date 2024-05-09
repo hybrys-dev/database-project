@@ -14,7 +14,9 @@
         $username = start_error_userprint();
     ?>
 
-    <h1>Seleziona un database</h1> <h3>User: <?php echo $username; ?></h3> <h3>Database:</h3>
+    <h1>Seleziona un database</h1>
+    <h3>User: <?php echo $username; ?></h3>
+    <h3>Database:<?php echo $currentdb?></h3>
     
     <?php
         $mysqli = new mysqli("localhost", "root", "");
@@ -28,17 +30,18 @@
         $result = $mysqli->query($query);
 
         echo "<h2>Database disponibili:</h2>";
-        echo "<ul>";
         while ($row = $result->fetch_assoc())
         {
             $databaseName = $row['Database'];
-            echo "<li>$databaseName</li>";
+            echo "<h2 onclick>$databaseName</h2>";
         }
-        echo "</ul>";
+        
     ?>
 
-    <h2>Database disponibili:</h2>
-            
-
+    <form action="esegui_funzione.php" method="post">
+        <h2 onclick="selezionah2()"><?php $databaseName?></h2>
+        <input type="hidden" id="h2_selected" name="h2_selected" value="0">
+        <input type="submit" value="Esegui funzione">
+    </form> 
 </body>
 </html>
