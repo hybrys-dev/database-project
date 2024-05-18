@@ -34,9 +34,18 @@
             header("Location: login.php");
             exit();
         }
-    }
-    function selectdb()
-    {
         
+    }
+    function dbprint()
+    {
+        if(isset($_SESSION['dbname']))
+        {
+            $dbname = $_SESSION['dbname'];
+            return $dbname;
+        }
+        else
+        {
+            echo "<p>No database selected</p>";
+        }
     }
 ?>

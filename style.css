@@ -23,7 +23,33 @@ body {
         background-position: 0% 50%;
     }
 }
-
+.container {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+textarea {
+    width: 100%;
+    height: 150px;
+}
+input[type="submit"] {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.result {
+    margin-top: 10px;
+}
 h1
 {
     font-size: 30px;
@@ -64,6 +90,13 @@ h3
     font-size: 15px;
     font-weight: bold;
     color: #ffffff;
+}
+.center-form {
+    width: 300px; /* Imposta la larghezza del form */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .homepage-container {
     width: 100%;
