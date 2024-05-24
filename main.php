@@ -8,7 +8,11 @@
 </head>
 <body>
     <?php
-        include 'DB_Connection.php';
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+    
+        include 'functions.php';
         $username = start_error_userprint();
         $currentdb = dbprint();
     ?>

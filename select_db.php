@@ -9,8 +9,11 @@
 <body>
 
     <?php
-        // Include the database connection file
-        include 'DB_Connection.php';
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+    
+        include 'functions.php';
         $username = start_error_userprint();
         $currentdb = dbprint();
     ?>
@@ -18,9 +21,10 @@
     <h1>Selezione databasee</h1>
     <h3>User: <?php echo $username; ?></h3>
     <h3>Database:<?php echo $currentdb?></h3>
+    <a href="main.php">Homepage</a>
+
     
     <?php
-        include 'select_funct.php';
         $mysqli = new mysqli("localhost", "root", "");
         
         if($mysqli->connect_error)
@@ -31,39 +35,23 @@
         $query = "SHOW DATABASES";
         $result = $mysqli->query($query);
         
-        //echo "<h2>Database disponibili:</h2>";
-        //while ($row = $result->fetch_assoc())
-        //{
-        //    $databaseName = $row['Database'];
-        //    $i = count($row);
-        //    echo "<h2 onclick>$databaseName</h2>";
-        //}
-        
     ?>
-
-    <form action="select_funct.php" method="post" class="center-form">
-        <select name="dbname">
-            <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<option value='" . $row['Database'] . "'>" . $row['Database'] . "</option>";
+    <div class="form-container">
+        <form action=<?php echo $_SERVER["PHP_SELF"]?> method="POST">
+            <label for="dbname">Select Database:</label>
+            <select name="dbname" id="dbname">
+                <?php
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            echo "<option value='". $row['Database']. "'>". $row['Database']. "</option>";
+                        }
+                    } else {
+                        echo "<option value=''>No databases found</option>";
                     }
-                } else {
-                    echo "<option>No databases found</option>";
-                }
-            ?>
-        </select>
-        <input type="submit" value="Select Database">
-    </form>
-    <?php
-        if (isset($_SESSION['dbname'])) {
-            $dbname = $_SESSION['dbname'];
-            $conn->select_db($dbname);
-        }
-        if ($conn->error) {
-            die("Failed to select database: " . $conn->error);
-        }
-    ?>
-
+                ?>
+            </select>
+            <input type="submit" value="Seleziona">
+        </form>
+    </div>
 </body>
 </html>

@@ -1,4 +1,7 @@
 <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
     function Connection()
     {
         $host = "localhost";
@@ -22,8 +25,10 @@
     function start_error_userprint()
     {
         session_start();
-        error_reporting(E_ALL);
         ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+    
         if(isset($_SESSION['username']))
         {
             $username = $_SESSION['username'];
@@ -38,14 +43,14 @@
     }
     function dbprint()
     {
-        if(isset($_SESSION['dbname']))
-        {
-            $dbname = $_SESSION['dbname'];
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $dbname = $_POST["dbname"];
             return $dbname;
         }
         else
         {
-            echo "<p>No database selected</p>";
+            $dbname = "Nessun database selezionato";
+            return $dbname;
         }
     }
 ?>
