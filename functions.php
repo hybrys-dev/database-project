@@ -18,8 +18,8 @@
     }
     function connectionAL() //After Login
     {
-            global $servername, $username, $password, $dbname;
-            $connection = mysqli_connect($servername, $username, $password, $_SESSION['dbname']);
+            global $host, $user, $password, $dbname;
+            $connection = mysqli_connect($host, $user, $password, $_SESSION['dbname']);
             if (!$connection) {
                 die("Connessione al database fallita: " . mysqli_connect_error());
             }
@@ -52,8 +52,8 @@
     }
     function dbprint()
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $dbname = $_POST["dbname"];
+        if(isset($_SESSION['dbname'])){
+            $dbname = $_SESSION["dbname"];
         }
         else
         {

@@ -2,46 +2,58 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+
     include 'functions.php';
     $username = start_error_userprint();
     $currentdb = dbprint();
 
     $executionResult = null;
     $connection = connectionAL();
-    if($_POST){
+
+    
+    if ($_POST) {
         $_SESSION["table"] = $_POST["table"];
-        $sql = "SELECT * FROM ".$_SESSION['table'];
+        $sql = "SELECT * FROM " . $_SESSION['table'];
         $result = mysqli_query($connection, $sql);
         if (mysqli_num_rows($result) > 0) {
-            // Output delle righe
             echo "<table>";
-            $row = mysqli_fetch_assoc($result);
-            echo "<tr>";
+            $header = true;
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                if ($header) {
+                    echo "<tr>";
                     foreach ($row as $key => $value) {
-                        echo "<td>";
-                            echo $key;
-                        echo "</td>";
+                        echo "<th>$key</th>";
                     }
-            echo "</tr>";
-            mysqli_data_seek($result,0);
-
-            while($row = mysqli_fetch_assoc($result)) {
+                    echo "</tr>";
+                    $header = false;
+                }
                 echo "<tr>";
-                    foreach ($row as $key => $value) {
-                        echo "<td>";
-                            echo $value;
-                        echo "</td>";
-                    }
+                foreach ($row as $value) {
+                    echo "<td>$value</td>";
+                }
                 echo "</tr>";
             }
             echo "</table>";
-            } else {
+        } else {
             echo "0 risultati";
-            }
+        }
     }
-    $sql = 'SHOW TABLES from'. $_SESSION['dbname'];
-    //$result = mysqli_query($connection, $sql);
+    
+    $sql = 'SHOW TABLES from ' . $_SESSION['dbname'];
+    $result = mysqli_query($connection, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        echo "<h2>Existing Tables:</h2>";
+        echo "<ul>";
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<li><a href='?table=" . $row["Tables_in_" . $_SESSION['dbname']] . "'>" . $row["Tables_in_" . $_SESSION['dbname']] . "</a></li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "No tables found in the database.";
+    }
+    
     CloseConnection($connection);
+
 
 ?>
 
@@ -59,15 +71,20 @@
     <h3>User: <?php echo $username; ?></h3>
     <h3>Database:<?php echo $currentdb?></h3>
 
-    <div class="container">
         <h2>Creazione tabelle</h2>
-        <form method="post">
-            <textarea name="sql" placeholder="Inserisci il codice SQL qua..."></textarea><br>
-            <input type="submit" value="Execute">
-        </form>
-        <?php if ($executionResult !== null): ?>
-            <div class="result"><?php echo htmlspecialchars($executionResult); ?></div>
-        <?php endif; ?>
-    </div>
+        <form action=<?php echo $_SERVER["PHP_SELF"] ?>  method="POST">
+        <select name="table" id="">
+        <?php
+            if (mysqli_num_rows($result) > 0) { 
+                while ($row = mysqli_fetch_assoc($result)) {
+                    foreach ($row as $key => $value) {
+                        echo "<option value=".$row[$key].">".$row[$key]."</option>";
+                    }
+                }
+            }    
+        ?>
+    </select>
+        <input type="submit">
+    </form>
 </body>
 </html>
