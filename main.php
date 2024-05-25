@@ -11,10 +11,12 @@
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
-    
+
         include 'functions.php';
         $username = start_error_userprint();
         $currentdb = dbprint();
+        $connection = connectionAL();
+        CloseConnection($connection);
     ?>
     <h1>Benvenuto nel tuo DBMS</h1>
     <h3>User: <?php echo $username; ?></h3>

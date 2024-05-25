@@ -16,24 +16,22 @@
         include 'functions.php';
         $username = start_error_userprint();
         $currentdb = dbprint();
+        $connection = connectionAL();
     ?>
 
-    <h1>Selezione databasee</h1>
+    <h1>Selezione database</h1>
     <h3>User: <?php echo $username; ?></h3>
     <h3>Database:<?php echo $currentdb?></h3>
-    <a href="main.php">Homepage</a>
-
     
     <?php
-        $mysqli = new mysqli("localhost", "root", "");
-        
-        if($mysqli->connect_error)
-        {
-            die("Conessione fallita: " . $mysqli->connect_error);
+        if($_POST){
+            $_SESSION['dbname'] = $_POST['dbname'];
+            header('Location: create_table.php');
         }
-
-        $query = "SHOW DATABASES";
-        $result = $mysqli->query($query);
+        $connection = connectionAL();
+        $sql = "SHOW DATABASES";
+        $result = mysqli_query($connection,$sql);
+        CloseConnection($connection);
         
     ?>
     <div class="form-container">
@@ -41,8 +39,8 @@
             <label for="dbname">Select Database:</label>
             <select name="dbname" id="dbname">
                 <?php
-                    if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
+                    if (mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
                             echo "<option value='". $row['Database']. "'>". $row['Database']. "</option>";
                         }
                     } else {
@@ -50,7 +48,12 @@
                     }
                 ?>
             </select>
-            <input type="submit" value="Seleziona">
+            <input type="submit" value="Seleziona" onclick="redirect()" >
+            <script>
+                function redirect(){
+                    window.location.href = 'create_table.php';
+                }
+            </script>
         </form>
     </div>
 </body>

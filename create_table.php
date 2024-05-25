@@ -5,32 +5,43 @@
     include 'functions.php';
     $username = start_error_userprint();
     $currentdb = dbprint();
-    include 'db_config.php';
 
     $executionResult = null;
+    $connection = connectionAL();
+    if($_POST){
+        $_SESSION["table"] = $_POST["table"];
+        $sql = "SELECT * FROM ".$_SESSION['table'];
+        $result = mysqli_query($connection, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            // Output delle righe
+            echo "<table>";
+            $row = mysqli_fetch_assoc($result);
+            echo "<tr>";
+                    foreach ($row as $key => $value) {
+                        echo "<td>";
+                            echo $key;
+                        echo "</td>";
+                    }
+            echo "</tr>";
+            mysqli_data_seek($result,0);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = $_POST['sql'];
-
-        if ($connection->multi_query($sql)) {
-            $executionResult = "Tabella creata con successo";
-        } else {
-            $executionResult = "Errore nella creazione della tabella:" . $connection->error;
-        }
-        // Chiudi la connessione per completare tutte le query multiple
-        while ($connection->more_results() && $connection->next_result()) {;}
-        $connection->close();
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                    foreach ($row as $key => $value) {
+                        echo "<td>";
+                            echo $value;
+                        echo "</td>";
+                    }
+                echo "</tr>";
+            }
+            echo "</table>";
+            } else {
+            echo "0 risultati";
+            }
     }
-    $sql = 'SHOW TABLES';
-    $result = $connection->query($sql);
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo $row['Tables_in_' . $database] . '<br>';
-        }
-    } else {
-        echo 'Nessuna tabella trovata nel database.';
-    }
+    $sql = 'SHOW TABLES from'. $_SESSION['dbname'];
+    //$result = mysqli_query($connection, $sql);
+    CloseConnection($connection);
 
 ?>
 

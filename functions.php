@@ -16,6 +16,15 @@
         }
         return $connection;
     }
+    function connectionAL() //After Login
+    {
+            global $servername, $username, $password, $dbname;
+            $connection = mysqli_connect($servername, $username, $password, $_SESSION['dbname']);
+            if (!$connection) {
+                die("Connessione al database fallita: " . mysqli_connect_error());
+            }
+            return $connection;
+    }
 
     function CloseConnection($connection)
     {
@@ -45,12 +54,13 @@
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dbname = $_POST["dbname"];
-            return $dbname;
         }
         else
         {
             $dbname = "Nessun database selezionato";
-            return $dbname;
         }
+        $currentdb = $dbname;
+        return $currentdb;
+
     }
 ?>
