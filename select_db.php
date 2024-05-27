@@ -24,14 +24,14 @@
         <h3>Database:<?php echo $currentdb?></h3> <!-- stampa database in uso-->
         
         <?php
-            $connection = connectionAL(); //connessione
+            $connection = connection(); //connessione
             $sql = "SHOW DATABASES"; //query di recupero dei database
             $result = mysqli_query($connection,$sql); //esecuzione query
             
             //salvataggio nome database + reinderizzamento
             if($_POST){
                 $_SESSION['dbname'] = $_POST['dbname'];
-                header('Location: create_table.php');
+                header('Location: main.php');
             }
         ?>
         

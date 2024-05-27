@@ -2,11 +2,12 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+    $host = "localhost";
+    $user = "root";
+    $password = "";
     function Connection()
     {
-        $host = "localhost";
-        $user = "root";
-        $password = "";
+        global $host, $user, $password;
         $dbname = "database_users";
 
         $connection = new mysqli($host, $user, $password, $dbname);
@@ -18,7 +19,7 @@
     }
     function connectionAL() //After Login
     {
-            global $host, $user, $password, $dbname;
+            global $host, $user, $password;
             $connection = mysqli_connect($host, $user, $password, $_SESSION['dbname']);
             if (!$connection) {
                 die("Connessione al database fallita: " . mysqli_connect_error());

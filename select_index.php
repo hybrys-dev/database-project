@@ -17,24 +17,17 @@
     <h1>Aggiornamento dati nelle tabelle</h1>
     <h3>User: <?php echo $username; ?></h3>
     <h3>Database:<?php echo $currentdb?></h3>
+    
     <?php
-        $conn = connectionAL();
 
-        $sql = "SELECT * FROM ".$_SESSION["table"]." LIMIT 1";
-        $result = mysqli_query($conn, $sql);
-        $rows = mysqli_fetch_assoc($result); 
         if($_POST){
-            $sql = "INSERT INTO ".$_SESSION['table']." VALUES(";
-            foreach ($rows as $key => $value) {
-                $sql .= "'".$_POST[$key]."',";
-            }
-            $sql = rtrim($sql,",");
-            $sql .= ");";
-            mysqli_query($conn, $sql);
+            $_SESSION['index'] = $_POST['index'];
+            header('Location: update_table.php');
         }
-
+        
+        $conn = connectionAL();
         $sql = "SELECT * FROM ".$_SESSION['table'];
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_query($conn,$sql);
         if (mysqli_num_rows($result) > 0) {
             // Output delle righe
             echo "<table>";
@@ -61,21 +54,12 @@
             } else {
             echo "0 risultati";
             }
-
-        
-        
-
-        
-        CloseConnection($conn);
     ?>
-
+    
+    <form action="select_index.php" method="POST">
+        <input type="number" name="indice" id="">
+        <input type="submit" name="indice">
+    </form>
 
 </body>
 </html>
- <form action=<?php echo $_SERVER["PHP_SELF"]?> method="POST">
-        <?php foreach ($rows as $key => $value) { ?>
-            <label><?php echo $key?></label>
-            <input type="text" name=<?php echo $key?> id="">
-        <?php } ?>
-        <input type="submit">
-    </form>
