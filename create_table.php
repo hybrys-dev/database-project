@@ -1,23 +1,62 @@
 <?php
-    include 'DB_Connection.php';
-    $username = start_error_userprint();
-    $currentdb = dbprint();
-    include 'db_config.php';
+    //seganlatori errori
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
-    $executionResult = null;
+    include 'functions.php'; //inclusione funzioni
+    $username = start_error_userprint(); //session_start() + recupero utente
+    $currentdb = dbprint(); //recupero database in uso
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = $_POST['sql'];
+    $executionResult = null; //variabile 
+    $connection = connectionAL();//connessione
 
-        if ($conn->multi_query($sql)) {
-            $executionResult = "Tables created successfully!";
+    //recupero tabelle del database selezionato    
+    if ($_POST) {
+        $_SESSION["table"] = $_POST["table"];
+        $sql = "SELECT * FROM " . $_SESSION['table'];
+        $result = mysqli_query($connection, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            echo "<table>";
+            $header = true;
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                if ($header) {
+                    echo "<tr>";
+                    foreach ($row as $key => $value) {
+                        echo "<th>$key</th>";
+                    }
+                    echo "</tr>";
+                    $header = false;
+                }
+                echo "<tr>";
+                foreach ($row as $value) {
+                    echo "<td>$value</td>";
+                }
+                echo "</tr>";
+            }
+            echo "</table>";
         } else {
-            $executionResult = "Error creating tables: " . $conn->error;
+            echo "0 risultati";
         }
-        // Chiudi la connessione per completare tutte le query multiple
-        while ($conn->more_results() && $conn->next_result()) {;}
-        $conn->close();
     }
+    
+    $sql = 'SHOW TABLES from ' . $_SESSION['dbname']; //query recupero tabelle
+    $result = mysqli_query($connection, $sql); //esecuzione query
+    //stampa tabelle presenti 
+    if (mysqli_num_rows($result) > 0) {
+        echo "<h2>Existing Tables:</h2>";
+        echo "<ul>";
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<li><a href='?table=" . $row["Tables_in_" . $_SESSION['dbname']] . "'>" . $row["Tables_in_" . $_SESSION['dbname']] . "</a></li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "No tables found in the database.";
+    }
+    
+    CloseConnection($connection); //chiusura connessione
+
+
 ?>
 
 
@@ -31,18 +70,23 @@
 </head>
 <body>
     <h1>Creazione tabelle</h1>
-    <h3>User: <?php echo $username; ?></h3>
-    <h3>Database:<?php echo $currentdb?></h3>
+    <h3>User: <?php echo $username; ?></h3> <!-- stampa utente -->
+    <h3>Database:<?php echo $currentdb?></h3> <!-- stampa database in uso -->
 
-    <div class="container">
-        <h2>Create Tables</h2>
-        <form method="post">
-            <textarea name="sql" placeholder="Inserisci il codice SQL qua..."></textarea><br>
-            <input type="submit" value="Execute">
-        </form>
-        <?php if ($executionResult !== null): ?>
-            <div class="result"><?php echo htmlspecialchars($executionResult); ?></div>
-        <?php endif; ?>
-    </div>
+        <h2>Creazione tabelle</h2>
+            <form action=<?php echo $_SERVER["PHP_SELF"] ?>  method="POST">
+                <select name="table" id="">
+                    <?php
+                        if (mysqli_num_rows($result) > 0) { 
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                foreach ($row as $key => $value) {
+                                    echo "<option value=".$row[$key].">".$row[$key]."</option>";
+                                }
+                            }
+                        }    
+                    ?>
+                </select>
+        <input type="submit">
+    </form>
 </body>
 </html>

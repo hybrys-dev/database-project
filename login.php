@@ -9,10 +9,8 @@
   <body>
 
     <?php
-        session_start();
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        include 'DB_Connection.php';
+        include 'functions.php';
+        $username = start_error_userprint();
         $connection = Connection();
         
 
@@ -27,7 +25,7 @@
           // Hash della password
           $hashed_password = password_hash($password, PASSWORD_DEFAULT);
       
-          $stmt = $connection->prepare("SELECT * FROM users WHERE User =?");
+          $stmt = $connection->prepare("SELECT * FROM users WHERE username =?");
           $stmt->bind_param("s", $username);
           $stmt->execute();
           $result = $stmt->get_result();
@@ -35,7 +33,7 @@
           if ($result->num_rows > 0)
           {
             $row = $result->fetch_assoc();
-            if (password_verify($row['Password'],$hashed_password))
+            if (password_verify($row['password'],$hashed_password))
             {
               echo "Accesso consentito.";
               $_SESSION['username'] = $username;
